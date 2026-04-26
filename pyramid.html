@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3d Cube</title>
+    <style>
+        #cubeRendering {
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="cube.html">Cube</a>
+    </nav>
+    <canvas id="cubeRendering"></canvas>
+    <script type="module">
+        import { Mesh } from '/Mesh.js';
+
+
+        const canvas = document.getElementById("cubeRendering");
+        const ctx = canvas.getContext("2d");
+
+
+        canvas.width = innerWidth;
+        canvas.height = innerHeight;
+        window.addEventListener("resize", () => {
+            canvas.width = innerWidth;
+            canvas.height = innerHeight;
+        });
+        const fov = 200
+        const angle = Math.PI/6;
+        const verticesPiramide = [
+            { x: 150, y: 350, z:  100 }, 
+            { x: 350, y: 350, z:  100 }, 
+            { x: 350, y: 150, z:  100 }, 
+            { x: 150, y: 150, z:  100 }, 
+            { x: 250, y: 250, z: -100 }  
+        ];
+
+        const conexoesPiramide = [
+            [0, 1], [1, 2], [2, 3], [3, 0], 
+            [0, 4], [1, 4], [2, 4], [3, 4]  
+        ];
+
+        const keys = [];
+        document.addEventListener("keydown", (e) => {
+            keys[e.keyCode] = true;
+            
+        });
+        document.addEventListener("keyup", (e) => {
+            keys[e.keyCode] = false;
+        })
+        const pyramid = new Mesh(verticesPiramide, conexoesPiramide, fov, {x: 0, y:0}, canvas, ctx);
+        
+        function loop(){
+            ctx.clearRect(0,0,canvas.width, canvas.height)
+            if(keys[68]) pyramid.angle.y = (pyramid.angle.y + Math.PI/60 + 2*Math.PI) % (2*Math.PI);
+            if(keys[65]) pyramid.angle.y = (pyramid.angle.y - Math.PI/60 + 2*Math.PI) % (2*Math.PI);
+            if(keys[87]) pyramid.angle.x = (pyramid.angle.x + Math.PI/60 + 2*Math.PI) % (2*Math.PI);
+            if(keys[83]) pyramid.angle.x = (pyramid.angle.x - Math.PI/60 + 2*Math.PI) % (2*Math.PI);
+            
+            if(keys[38]) pyramid.move(0, -10, 0);
+            if(keys[40]) pyramid.move(0, 10, 0);
+            if(keys[39]) pyramid.move(10, 0, 0);
+            if(keys[37]) pyramid.move(-10, 0, 0);
+
+            if(keys[81]) pyramid.move(0,0,-10);
+            if(keys[69]) pyramid.move(0,0,10);
+
+            if(keys[70]) pyramid.scaleValue += 0.1;
+            if(keys[82]) pyramid.scaleValue -= 0.1;
+            pyramid.draw();
+            requestAnimationFrame(loop);
+        }
+        requestAnimationFrame(loop);
+
+
+
+    </script>
+</body>
+</html>

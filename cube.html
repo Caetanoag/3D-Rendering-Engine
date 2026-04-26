@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3d Cube</title>
+    <style>
+        #cubeRendering {
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="pyramid.html">Pyramid</a>
+    </nav>
+    <canvas id="cubeRendering"></canvas>
+    <script type="module">
+        import { Mesh } from '/Mesh.js';
+
+
+        export const canvas = document.getElementById("cubeRendering");
+        export const ctx = canvas.getContext("2d");
+
+
+        canvas.width = innerWidth;
+        canvas.height = innerHeight;
+        window.addEventListener("resize", () => {
+            canvas.width = innerWidth;
+            canvas.height = innerHeight;
+        });
+        const fov = 200
+        const angle = Math.PI/6;
+        const verticesCubo = [
+            { x: 150, y: 150, z: 100 }, 
+            { x: 350, y: 150, z: 100 }, 
+            { x: 350, y: 350, z: 100 }, 
+            { x: 150, y: 350, z: 100 }, 
+            { x: 150, y: 150, z: -100 },
+            { x: 350, y: 150, z: -100 },
+            { x: 350, y: 350, z: -100 },
+            { x: 150, y: 350, z: -100 } 
+        ];
+
+        const conexoesCubo = [
+            [0, 1], [1, 2], [2, 3], [3, 0], 
+            [4, 5], [5, 6], [6, 7], [7, 4], 
+            [0, 4], [1, 5], [2, 6], [3, 7]
+        ];
+
+        const keys = [];
+        document.addEventListener("keydown", (e) => {
+            keys[e.keyCode] = true;
+        });
+        document.addEventListener("keyup", (e) => {
+            keys[e.keyCode] = false;
+        })
+        const cubo1 = new Mesh(verticesCubo, conexoesCubo, fov, {x: 0, y:0}, canvas, ctx);
+        
+        function loop(){
+            ctx.clearRect(0,0,canvas.width, canvas.height)
+            if(keys[68]) cubo1.angle.y = (cubo1.angle.y + Math.PI/60 + 2*Math.PI) % (2*Math.PI);
+            if(keys[65]) cubo1.angle.y = (cubo1.angle.y - Math.PI/60 + 2*Math.PI) % (2*Math.PI);
+            if(keys[87]) cubo1.angle.x = (cubo1.angle.x + Math.PI/60 + 2*Math.PI) % (2*Math.PI);
+            if(keys[83]) cubo1.angle.x = (cubo1.angle.x - Math.PI/60 + 2*Math.PI) % (2*Math.PI);
+            
+            if(keys[38]) cubo1.move(0, -10, 0);
+            if(keys[40]) cubo1.move(0, 10, 0);
+            if(keys[39]) cubo1.move(10, 0, 0);
+            if(keys[37]) cubo1.move(-10, 0, 0);
+
+            if(keys[81]) cubo1.move(0,0,-10);
+            if(keys[69]) cubo1.move(0,0,10)
+
+            cubo1.draw();
+            requestAnimationFrame(loop);
+        }
+        requestAnimationFrame(loop);
+
+
+
+    </script>
+</body>
+</html>
