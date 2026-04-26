@@ -27,8 +27,9 @@ All mathematics (matrix operations, perspective projection, 3D rotation) are imp
 ```
 3DRendering/
 ├── Mesh.js          # Core engine: Matrix, MatrixMath, Mesh classes
-├── cube.html        # Cube scene
-└── pyramid.html     # Pyramid scene
+├──── examples/
+├───────cube.html        # Cube scene
+└───────pyramid.html     # Pyramid scene
 ```
 
 ### `Matrix`
