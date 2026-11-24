@@ -4,7 +4,7 @@ A lightweight 3D wireframe rendering engine built from scratch using vanilla Jav
 
 All mathematics (matrix operations, perspective projection, 3D rotation) are implemented from first principles, including a custom linear algebra library (`Matrix` and `MatrixMath` classes).
 
-## Demo
+## Demos
 
 | Shape | Controls |
 |---|---|
